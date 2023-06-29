@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tic-Tac-Toe</title>
+  <style>
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 10px;
+    }
+
+    .cell {
+      border: 1px solid #000;
+      width: 100px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tic-Tac-Toe</h1>
+  <div class="board">
+    <div class="cell"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+  </div>
+
+  <script>
+    // Get all the cells on the board
+    const cells = document.querySelectorAll('.cell');
+    // Set the initial player
+    let currentPlayer = 'X';
+    // Flag to indicate if the game has ended
+    let gameEnd = false;
+
+    // Add a click event listener to each cell
+    cells.forEach(cell => {
+      cell.addEventListener('click', handleClick);
+    });
+
+    // Function to handle cell click
+    function handleClick() {
+      // Check if the game has ended or if the cell is already occupied
+      if (gameEnd || this.textContent !== '') {
+        return;
+      }
+
+      // Set the current player's mark on the clicked cell
+      this.textContent = currentPlayer;
+      this.style.color = currentPlayer === 'X' ? 'blue' : 'red';
+
+      // Check if the current player has won
+      if (checkWin()) {
+        announceWinner();
+        gameEnd = true;
+        return;
+      }
+
+      // Check if the game is a draw
+      if (checkDraw()) {
+        announceDraw();
+        gameEnd = true;
+        return;
+      }
+
+      // Switch to the next player
+      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+    }
+
+    // Function to check if a player has won
+    function checkWin() {
+      // Define all the winning combinations
+      const winningCombos = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+        [0, 4, 8], [2, 4, 6] // Diagonals
+      ];
+
+      // Check if any of the winning combinations have been achieved
+      return winningCombos.some(combo => {
+        const [a, b, c] = combo;
+        return (
+          cells[a].textContent !== '' &&
+          cells[a].textContent === cells[b].textContent &&
+          cells[b].textContent === cells[c].textContent
+        );
+      });
+    }
+
+    // Function to announce the winner
+    function announceWinner() {
+      alert(`Player ${currentPlayer} wins!`);
+    }
+
+    // Function to check if the game is a draw
+    function checkDraw() {
+      // Check if all cells are occupied
+      return Array.from(cells).every(cell => cell.textContent !== '');
+    }
+
+    // Function to announce a draw
+    function announceDraw() {
+      alert("It's a draw!");
+    }
+  </script>
+</body>
+</html>
