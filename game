@@ -7,6 +7,7 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-gap: 10px;
+      max-width: 100px;
     }
 
     .cell {
@@ -18,6 +19,9 @@
       justify-content: center;
       font-size: 40px;
       cursor: pointer;
+    }
+    #reset {
+      margin: 10px 0;
     }
   </style>
 </head>
@@ -34,7 +38,8 @@
     <div class="cell"></div>
     <div class="cell"></div>
   </div>
-
+  <button id="reset">Reset Board</button>
+  
   <script>
     // Get all the cells on the board
     const cells = document.querySelectorAll('.cell');
@@ -111,6 +116,24 @@
     // Function to announce a draw
     function announceDraw() {
       alert("It's a draw!");
+    }
+
+    // Get the reset button element
+    const resetButton = document.getElementById('reset');
+    // Add a click event listener to the reset button
+    resetButton.addEventListener('click', resetBoard);
+
+    // Function to reset the game board
+    function resetBoard() {
+      // Clear the board by resetting cell contents and colors
+      cells.forEach(cell => {
+        cell.textContent = '';
+        cell.style.color = '';
+      });
+
+      // Reset game state
+      currentPlayer = 'X';
+      gameEnd = false;
     }
   </script>
 </body>
